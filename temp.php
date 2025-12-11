@@ -1,20 +1,27 @@
 <?php
 function getUserIP() {
-    // Si le visiteur est derrière un proxy ou un load balancer
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
         return $_SERVER['HTTP_CLIENT_IP'];
     }
 
     if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-        // Peut contenir plusieurs IP, on prend la première
         return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
     }
 
-    // Adresse IP directe
     return $_SERVER['REMOTE_ADDR'];
 }
 
 $ip = getUserIP();
-echo "Votre adresse IP est : " . htmlspecialchars($ip);
+$time = date("Y-m-d H:i:s");
 
+// Fichier de log (créé automatiquement si absent)
+$logFile = __DIR__ . '/visites.log';
+
+// Ligne à écrire
+$entry = "$time - IP: $ip\n";
+
+// Ajouter dans le fichier
+file_put_contents($logFile, $entry, FILE_APPEND | LOCK_EX);
+
+echo "Votre IP est : " . htmlspecialchars($ip);
 ?>
