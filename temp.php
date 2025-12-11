@@ -1,3 +1,4 @@
+<?php
 function getUserIP() {
     // Si le visiteur est derrière un proxy ou un load balancer
     if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
@@ -15,3 +16,5 @@ function getUserIP() {
 
 $ip = getUserIP();
 echo "Votre adresse IP est : " . htmlspecialchars($ip);
+
+?>
